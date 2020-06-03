@@ -9,8 +9,6 @@ PwmOut servo(D11);
 Timer t;
 Timer t1;
 Ticker encoder_ticker;
-EventQueue queue(32 * EVENTS_EVENT_SIZE);
-Thread speed;
 
 volatile int steps;
 volatile int last;
@@ -28,13 +26,9 @@ void encoder_control() {
   last = value;
 }
 
-
 int main() {
-
   pc.baud(9600);
-  speed.start(callback(&queue, &EventQueue::dispatch_forever));
   encoder_ticker.attach(&encoder_control, .001);
-
   servo.period(.02);
   //speed
   t1.start();
@@ -45,7 +39,7 @@ int main() {
     t.reset();
     t.start();
 
-    wait(8);
+    wait(1);
 
     float time = t.read();
     pc.printf("%1.3f\r\n", (float)steps * 6.5 * 3.14 / 32 / time);
@@ -61,7 +55,7 @@ int main() {
     t.reset();
     t.start();
 
-    wait(8);
+    wait(1);
 
     float time = t.read();
     pc.printf("%1.3f\r\n", (float)steps * 6.5 * 3.14 / 32 / time);

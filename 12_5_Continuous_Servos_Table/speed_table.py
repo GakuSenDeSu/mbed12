@@ -3,7 +3,7 @@ import numpy as np
 import serial
 
 Ts = 30;   # signal interval
-end = 150; # signal end point
+end = 100; # signal end point
 n = int(end/Ts)+1
 
 x = np.linspace(0, end, num=n) # x axis
