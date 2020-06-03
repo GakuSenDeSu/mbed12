@@ -3,8 +3,6 @@
 #define CENTER_BASE 1500
 
 PwmOut servo(D11);
-Serial pc(USBTX, USBRX); // tx, rx
-
 
 void servo_control(int speed){
     if (speed > 200)       speed = 200;
@@ -17,11 +15,9 @@ int main() {
     servo.period(.02);
 
     while(1) {
-        servo_control(100);
-        pc.printf("work +\r\n");
+        servo_control(0);
         wait(2);
-        servo_control(-100);
-        pc.printf("work -\r\n");
+        servo_control(0);
         wait(2);
     }
 }
