@@ -28,19 +28,19 @@ void encoder_control() {
 
 int main() {
   pc.baud(9600);
-  servo_control(0);
   encoder_ticker.attach(&encoder_control, .001);
   servo.period(.02);
+  servo_control(0);
   //speed
   t1.start();
   while (t1.read() <= 5) {
-    servo_control(25.138850477515426);
+    servo_control(23.00);
 
     steps = 0;
     t.reset();
     t.start();
 
-    wait(1);
+    wait(2);
 
     float time = t.read();
     pc.printf("%1.3f\r\n", (float)steps * 6.5 * 3.14 / 32 / time);
@@ -50,13 +50,13 @@ int main() {
   //counterwise
   t1.start();
   while (t1.read() <= 5) {
-    servo_control(-44.46909569791206);
+    servo_control(-42.00);
 
     steps = 0;
     t.reset();
     t.start();
 
-    wait(1);
+    wait(2);
 
     float time = t.read();
     pc.printf("%1.3f\r\n", (float)steps * 6.5 * 3.14 / 32 / time);
