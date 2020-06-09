@@ -28,6 +28,7 @@ void encoder_control() {
 
 int main() {
   pc.baud(9600);
+  servo_control(0);
   encoder_ticker.attach(&encoder_control, .001);
   servo.period(.02);
   //speed
