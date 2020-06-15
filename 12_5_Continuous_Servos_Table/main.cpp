@@ -3,65 +3,54 @@
 #define CENTER_BASE 1500
 
 Serial pc(USBTX, USBRX);
-DigitalIn encoder(D10);
-PwmOut servo(D11);
+DigitalIn encoder(D3);
+PwmOut servo(D9);
 
 Timer t;
-Timer t1;
 Ticker encoder_ticker;
 
 volatile int steps;
 volatile int last;
 
-void servo_control(int speed) {
-  if (speed > 200)       speed = 200;
-  else if (speed < -200) speed = -200;
+void servo_control(int speed){
+    if (speed > 200)       speed = 200;
+    else if (speed < -200) speed = -200;
 
-  servo = (CENTER_BASE + speed) / 20000.0f;
+    servo = (CENTER_BASE + speed)/20000.0f;
 }
 
-void encoder_control() {
-  int value = encoder;
-  if (!last && value) steps++;
-  last = value;
+void encoder_control(){
+    int value = encoder;
+    if(!last && value) steps++;
+    last = value;
 }
 
 int main() {
-  pc.baud(9600);
-  encoder_ticker.attach(&encoder_control, .001);
-  servo.period(.02);
-  servo_control(0);
-  //speed
-  t1.start();
-  while (t1.read() <= 5) {
-    servo_control(23.00);
 
-    steps = 0;
-    t.reset();
-    t.start();
+    pc.baud(9600);
 
-    wait(2);
+    encoder_ticker.attach(&encoder_control, .001);
 
-    float time = t.read();
-    pc.printf("%1.3f\r\n", (float)steps * 6.5 * 3.14 / 32 / time);
-  }
-  servo_control(0);
-  t1.reset();
-  //counterwise
-  t1.start();
-  while (t1.read() <= 5) {
-    servo_control(-42.00);
+    servo.period(.02);
 
-    steps = 0;
-    t.reset();
-    t.start();
+    int i = -150;
+    while(i<=150) {
 
-    wait(2);
+        servo_control(i);
 
-    float time = t.read();
-    pc.printf("%1.3f\r\n", (float)steps * 6.5 * 3.14 / 32 / time);
-  }
-  servo_control(0);
+        steps = 0;
+        t.reset();
+        t.start();
 
-  while (1);
+        wait(8);
+
+        float time = t.read();
+
+        pc.printf("%1.3f\r\n", (float)steps*6.5*3.14/32/time);
+
+        i += 30;
+    }
+    servo_control(0);
+
+    while(1);
 }

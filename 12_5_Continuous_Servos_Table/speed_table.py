@@ -1,20 +1,16 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import serial
-import time
 
 Ts = 30;   # signal interval
-end = 150; # signal end point
+end = 300; # signal end point
 n = int(end/Ts)+1
 
-x = np.linspace(0, end, num=n) # x axis
+x = [-150, -120, -90, -60, -30, 0, 30, 60, 90, 120, 150] #  x axis
 y = np.zeros(n)                # y axis
 
 serdev = '/dev/ttyACM0'
 s = serial.Serial(serdev)
-
-print('Start')
-time.sleep(1)
 
 for i in range(0, n):
     line=s.readline() # Read a string from K66F terminated with '\n'
